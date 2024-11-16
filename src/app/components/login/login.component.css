@@ -1,0 +1,74 @@
+/* Contenedor del formulario de login */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+/* Tarjeta de Login */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+}
+
+/* Título de Login */
+.login-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #3f51b5;
+  margin-bottom: 20px;
+}
+
+/* Campos de entrada */
+.login-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.login-field input {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f1f3f6;
+}
+
+mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-color: #cfd8dc;
+}
+
+mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  border-color: #3f51b5;
+}
+
+/* Mensaje de error */
+.error-message {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Botón de Login */
+.login-button {
+  display: flex;
+  justify-content: center;
+}
+
+.login-button button {
+  width: 100%;
+  padding: 10px 0;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-button button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(63, 81, 181, 0.3);
+}

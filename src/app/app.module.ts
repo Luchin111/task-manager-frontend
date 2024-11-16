@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskFormComponent } from './components/task-form/task-form.component';
-import { TaskDetailsComponent } from './components/task-details/task-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { MaterialModule } from './shared/material/material.module';
 
@@ -17,7 +16,6 @@ import { MaterialModule } from './shared/material/material.module';
     AppComponent,
     TaskListComponent,
     TaskFormComponent,
-    TaskDetailsComponent,
     LoginComponent,
   ],
   imports: [

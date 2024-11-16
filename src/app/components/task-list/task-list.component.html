@@ -1,22 +1,60 @@
-<mat-form-field>
-  <mat-label>Search Tasks</mat-label>
-  <input matInput [(ngModel)]="searchText" (input)="search()" />
-</mat-form-field>
+<div class="task-container">
+  <!-- Barra de búsqueda y botón -->
+  <div class="task-header">
+    <mat-form-field class="search-field" appearance="outline">
+      <mat-label>Search Tasks</mat-label>
+      <input matInput [(ngModel)]="searchText" (input)="search()" placeholder="Search by title..." />
+    </mat-form-field>
+    <button mat-raised-button color="accent" class="add-task-btn" (click)="addTask()">+ Add Task</button>
+  </div>
 
-<mat-table [dataSource]="tasks">
-  <ng-container matColumnDef="title">
-    <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-    <mat-cell *matCellDef="let task"> {{ task.title }} </mat-cell>
-  </ng-container>
+  <!-- Tabla de Tareas -->
+  <mat-card class="task-card">
+    <mat-card-title class="task-title">Task List</mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-table [dataSource]="tasks" class="mat-elevation-z8 styled-table">
+      <!-- Título -->
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{ task.title }} </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-    <mat-cell *matCellDef="let task">
-      <button mat-button color="primary" [routerLink]="['/tasks/edit', task.taskId]">Edit</button>
-      <button mat-button color="warn" (click)="deleteTask(task.taskId)">Delete</button>
-    </mat-cell>
-  </ng-container>
+      <!-- Descripción -->
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{ task.description }} </mat-cell>
+      </ng-container>
 
-  <mat-header-row *matHeaderRowDef="['title', 'actions']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['title', 'actions']"></mat-row>
-</mat-table>
+      <!-- Fecha de vencimiento -->
+      <ng-container matColumnDef="dueDate">
+        <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{ task.dueDate | date:'shortDate' }} </mat-cell>
+      </ng-container>
+
+      <!-- Estado -->
+      <ng-container matColumnDef="isCompleted">
+        <mat-header-cell *matHeaderCellDef> Completed </mat-header-cell>
+        <mat-cell *matCellDef="let task">
+          <mat-checkbox [checked]="task.isCompleted" disabled></mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Acciones -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let task">
+          <button mat-icon-button color="primary" [routerLink]="['/tasks/edit', task.taskId]">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteTask(task.taskId)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Filas -->
+      <mat-header-row *matHeaderRowDef="['title', 'description', 'dueDate', 'isCompleted', 'actions']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['title', 'description', 'dueDate', 'isCompleted', 'actions']"></mat-row>
+    </mat-table>
+  </mat-card>
+</div>

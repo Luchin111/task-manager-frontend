@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-task-form',
@@ -10,36 +10,42 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class TaskFormComponent implements OnInit {
   taskForm!: FormGroup;
-  taskId?: number;
+  isEdit = false;
+  isLoading = true; // Variable para controlar el estado de carga
 
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.taskForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      dueDate: ['', Validators.required],
-      isCompleted: [false],
+      title: [{ value: '', disabled: this.isLoading }, Validators.required],
+      description: [{ value: '', disabled: this.isLoading }],
+      dueDate: [{ value: '', disabled: this.isLoading }, Validators.required],
+      isCompleted: [{ value: false, disabled: this.isLoading }],
     });
 
-    this.route.params.subscribe((params) => {
-      if (params['id']) {
-        this.taskId = +params['id'];
-        this.taskService.getTaskById(this.taskId).subscribe((task) => {
-          this.taskForm.patchValue(task);
-        });
-      }
-    });
+    const taskId = this.route.snapshot.paramMap.get('id');
+    if (taskId) {
+      this.isEdit = true;
+      this.taskService.getTaskById(+taskId).subscribe((task) => {
+        this.taskForm.patchValue(task);
+        this.isLoading = false; // Deshabilita el estado de carga cuando los datos se cargan
+        this.taskForm.enable(); // Habilita el formulario una vez que los datos están disponibles
+      });
+    } else {
+      this.isLoading = false; // Deshabilita el estado de carga en modo creación
+      this.taskForm.enable(); // Habilita el formulario
+    }
   }
 
   saveTask(): void {
-    if (this.taskId) {
-      this.taskService.updateTask(this.taskId, this.taskForm.value).subscribe(() => {
+    if (this.isEdit) {
+      const taskId = Number(this.route.snapshot.paramMap.get('id'));
+      this.taskService.updateTask(taskId, this.taskForm.value).subscribe(() => {
         this.router.navigate(['/tasks']);
       });
     } else {
@@ -47,5 +53,9 @@ export class TaskFormComponent implements OnInit {
         this.router.navigate(['/tasks']);
       });
     }
+  }
+
+  cancel(): void {
+    this.router.navigate(['/tasks']);
   }
 }
