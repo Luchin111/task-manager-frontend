@@ -30,16 +30,22 @@ export class TaskFormComponent implements OnInit {
 
     const taskId = this.route.snapshot.paramMap.get('id');
     if (taskId) {
-      this.isEdit = true;
-      this.taskService.getTaskById(+taskId).subscribe((task) => {
-        this.taskForm.patchValue(task);
-        this.isLoading = false; // Deshabilita el estado de carga cuando los datos se cargan
-        this.taskForm.enable(); // Habilita el formulario una vez que los datos están disponibles
-      });
-    } else {
-      this.isLoading = false; // Deshabilita el estado de carga en modo creación
+    this.isEdit = true;
+    this.taskService.getTaskById(+taskId).subscribe((task) => {
+      // Convertimos la fecha al formato 'YYYY-MM-DD'
+      const taskWithFormattedDate = {
+        ...task,
+        dueDate: task.dueDate ? task.dueDate.split('T')[0] : '', // Formateamos la fecha
+      };
+
+      this.taskForm.patchValue(taskWithFormattedDate);
+      this.isLoading = false; // Deshabilita el estado de carga
       this.taskForm.enable(); // Habilita el formulario
-    }
+    });
+  } else {
+    this.isLoading = false; // Deshabilita el estado de carga en modo creación
+    this.taskForm.enable(); // Habilita el formulario
+  }
   }
 
   saveTask(): void {

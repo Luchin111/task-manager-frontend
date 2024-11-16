@@ -122,3 +122,24 @@ button.mat-icon-button:hover {
 .mat-row {
   border-radius: 8px;
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 150px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 10px;
+  color: gray;
+}
+
+.error-message {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  margin: 20px 0;
+}
